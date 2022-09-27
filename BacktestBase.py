@@ -160,13 +160,14 @@ class BacktestBase(object):
         '''
         date, price = self.get_date_price(bar, col)
         print('units : ',units ,'/ amount : ', amount)
-        if bar == 0:
+        if units == None:
             units = int(amount / price)
+        else:
+            units = int(self.amount / price)
         buy_price = (units * price)
         self.amount -= buy_price
         self.units += units
         self.trades += 1
-        print('amount : ', amount)
         print(f'<매수> 잔고 : {self.amount} | 매수 금액 : {buy_price} | 잔여 수량 : {self.units} | 수량 : {units} | trades : {self.trades}')
         if self.verbose:
             print(f'{date} | buying {units} units at {price:.2f}')
@@ -177,15 +178,11 @@ class BacktestBase(object):
         ''' 매도 주문을 넣는다.
         '''
         date, price = self.get_date_price(bar, col)
-        print('units : ',units ,'/ amount : ', amount)
-        if bar == 0:
-            units = int(amount / price)
+        print('units : ', units ,'/ amount : ', amount)
         sell_price = (units * price)
         self.amount += sell_price
         self.units -= units
         self.trades += 1
-        
-        print('amount : ', amount)
         print(f'<매도> 잔고 : {self.amount} | 매도 금액 : {sell_price} | 잔여 수량 : {self.units} | 수량 : {units} | trades : {self.trades}')
         if self.verbose:
             print(f'{date} | selling {units} units at {price:.2f}')
